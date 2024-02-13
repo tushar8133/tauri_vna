@@ -11,7 +11,7 @@ async function greet() {
 
 async function connectToMachine() {
   // alert(234)
-  greetMsgEl.textContent = await invoke("vna_send", { address: "127.0.0.1:3000", command: "*IDN?" });
+  greetMsgEl.textContent = await invoke("vna_send", { address: "127.0.0.1:5001", command: "*IDN?" });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
