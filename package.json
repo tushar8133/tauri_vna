@@ -7,7 +7,8 @@
     "tauri": "tauri",
     "start": "tauri dev",
     "justbuild": "tauri build",
-    "build:win": "tauri build -- --target x86_64-pc-windows-msvc"
+    "build:win": "tauri build -- --target x86_64-pc-windows-msvc",
+    "createicon": "tauri icon icon.png"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.8"

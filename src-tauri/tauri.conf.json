@@ -5,8 +5,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "shockline-app",
-    "version": "0.0.0"
+    "productName": "io-interface",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -20,7 +20,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "shockline-app",
+        "title": "io-interface",
         "width": 800,
         "height": 600
       }

@@ -6,7 +6,7 @@ let command;
 let message;
 
 function logMessage(x) {
-  message.textContent = message.textContent + "\n" + x;
+  message.textContent =  x + "\n"+ message.textContent;
 }
 
 async function send_command() {
