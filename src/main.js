@@ -1,31 +1,29 @@
 const { invoke } = window.__TAURI__.tauri;
 
-let greetInputEl;
-let greetMsgEl;
+let address;
+let port;
+let command;
+let message;
 
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
+function logMessage(x) {
+  message.textContent = message.textContent + "\n" + x;
 }
 
-
-async function connectToMachine() {
-  // alert(234)
-  greetMsgEl.textContent = await invoke("vna_send", { address: "127.0.0.1:5001", command: "*IDN?" });
+async function send_command() {
+  const fullAddress = address.value + ":" + port.value;
+  const result = await invoke("connect_machine", { remote: fullAddress, command: command.value });
+  logMessage(result);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form").addEventListener("submit", (e) => {
+  address = document.querySelector("#address");
+  port = document.querySelector("#port");
+  command = document.querySelector("#command");
+  message = document.querySelector("#message");
+  
+  document.querySelector("#send").addEventListener("click", (e) => {
     e.preventDefault();
-    greet();
+    send_command();
   });
-
-  document.querySelector("#connect-to-machine").addEventListener("click", (e) => {
-    e.preventDefault();
-    connectToMachine();
-  });
-
   
 });

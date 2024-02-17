@@ -8,26 +8,9 @@ use std::io::{BufRead, BufReader, Write};
 use std::time::Duration;
 use std::net::SocketAddr;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn greet(name: &str) -> String {
-    println!("test test 2");
-    format!("Hello, {}! You've been greeted from Rust!", name);
-    // let response = vna_send1("127.0.0.1:3000".to_string(), "*IDN?".to_string());
-    // println!("\n**** {}", &response);
-    // return response.to_string();
-    return "respponse from rust".to_string();
-}
-
-#[tauri::command]
-fn vna_send1(address: String, command: String) -> String {
-    println!("vna test");
-    return command;
-}
-
-#[tauri::command]
-fn vna_send(address: String, command: String) -> String {
-    let remote: SocketAddr = address.parse().unwrap();
+fn connect_machine(remote: String, command: String) -> String {
+    let remote: SocketAddr = remote.parse().unwrap();
     match TcpStream::connect_timeout(&remote, Duration::from_secs(1)) {
         Ok(mut stream) => {
             stream.set_read_timeout(Some(Duration::from_millis(3000)));
@@ -57,7 +40,7 @@ fn vna_send(address: String, command: String) -> String {
 
 fn main() {
     tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![greet, vna_send])
+    .invoke_handler(tauri::generate_handler![connect_machine])
     // .invoke_handler(tauri::generate_handler![vna_send])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -14,19 +14,26 @@
   </head>
 
   <body>
-    <div class="container">
-      <h1>Welcome Anoop!</h1>
 
-     
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Hello</button>
-      </form>
+    <h1>io-Interface</h1>
 
-      <p id="greet-msg"></p>
-    </div>
+    <fieldset>
+      <legend>Connection</legend>
+      <input id="address" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1"/>
+      <input id="port" placeholder="PORT" style="width: 70px;" value="5001"/>
+      <!-- <button id="connect">Connect</button> -->
+    </fieldset>
 
-    <h1><button id="connect-to-machine">Connect</button></h1>
+    <fieldset>
+      <legend>Command</legend>
+      <input id="command" placeholder="Enter Command" style="width: 86%" value="*IDN?"/>
+      <button id="send" style="width: 80px;">Send</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Output</legend>
+      <textarea id="message"></textarea>
+    </fieldset>
 
   </body>
 </html>
