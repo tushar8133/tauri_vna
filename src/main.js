@@ -7,7 +7,7 @@ let message;
 let filedata = [];
 
 function logMessage(x) {
-  message.textContent = x + "\n" + message.textContent;
+  message.value = x + "\n" + message.value;
 }
 
 async function send_command() {
@@ -24,7 +24,7 @@ function preview2(e) {
     let data = evt.target.result;
     filedata = data.split("\r\n");
     document.querySelector("#preview2").value = null;
-    let noblanks = filedata.filter( (line) => !(/^\s*&/.test(line)));
+    let noblanks = filedata.filter( (line) => !(/^\s*$/.test(line)));
     sendList(noblanks);
   }
 
@@ -42,14 +42,23 @@ async function sendList(noblanks) {
       comments.push(line);
     } else {
       command.value = line;
+      logMessage("------------------------------------------------------------");
       await send_command();
       comments.reverse().forEach(m => {
         logMessage(m);
       })
       comments = [];
+      await waitforme(500);
     }
   }
+  command.value = "";
 }
+
+function waitforme(millisec) { 
+  return new Promise(resolve => { 
+      setTimeout(() => { resolve('') }, millisec); 
+  }) 
+} 
 
 window.addEventListener("DOMContentLoaded", () => {
   address = document.querySelector("#address");

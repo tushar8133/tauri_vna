@@ -14,6 +14,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+html, body {
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -70,4 +74,13 @@ input, textarea {
 input, textarea, button {
   font-size: 16px;
   margin: 5px;
+}
+
+/* fieldset:has(textarea) {
+  height: 100%;
+} */
+
+textarea {
+  min-height: 30vh;
+  max-height: 100%;
 }
