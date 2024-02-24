@@ -16,22 +16,38 @@ async function send_command() {
   logMessage(result);
 }
 
-async function preview2(e) {
+function preview2(e) {
   filedata = [];
   var reader = new FileReader();
-  console.log("HIIII")
   reader.readAsText(e.target.files[0], "UTF-8");
   reader.onload = function (evt) {
     let data = evt.target.result;
-    filedata = data.split("\n")
-    
-    filedata.forEach( async(line) => {
-      command.value = line;
-      send_command();
-    });
+    filedata = data.split("\r\n");
+    document.querySelector("#preview2").value = null;
+    let noblanks = filedata.filter( (line) => !(/^\s*&/.test(line)));
+    sendList(noblanks);
   }
+
   reader.onerror = function () {
     command.value = "ERROR";
+  }
+}
+
+async function sendList(noblanks) {
+  let comments = [];
+
+  for (let index = 0; index < noblanks.length; index++) {
+    let line = noblanks[index];
+    if (/^#/.test(line)) {
+      comments.push(line);
+    } else {
+      command.value = line;
+      await send_command();
+      comments.reverse().forEach(m => {
+        logMessage(m);
+      })
+      comments = [];
+    }
   }
 }
 
