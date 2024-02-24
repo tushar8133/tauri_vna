@@ -16,6 +16,8 @@
 
 html, body {
   height: 100%;
+  margin: 0;
+  padding: 0 8px;
 }
 
 * {
@@ -57,13 +59,15 @@ textarea {
 }
 
 fieldset {
-  margin-bottom: 30px;
+  margin-bottom: 22px;
   /* background-color: rgba(0,0 ,0, 0.2); */
   border-color: #0f0f0f69;
 }
 
-h1 {
+h1, h6 {
   text-align: center;
+  padding: 10px;
+  margin: 0;
 }
 
 input, textarea {
@@ -81,6 +85,11 @@ input, textarea, button {
 } */
 
 textarea {
-  min-height: 30vh;
+  min-height: 20vh;
   max-height: 100%;
+}
+
+a {
+  color: aqua;
+  text-decoration: none;
 }
