@@ -13,7 +13,7 @@ fn connect_machine(remote: String, command: String) -> String {
     let remote: SocketAddr = remote.parse().unwrap();
     match TcpStream::connect_timeout(&remote, Duration::from_secs(1)) {
         Ok(mut stream) => {
-            stream.set_read_timeout(Some(Duration::from_millis(3000)));
+            stream.set_read_timeout(Some(Duration::from_millis(4000)));
             let msg = format!("{}{}", &command, "\n");
             stream.write(msg.as_bytes()).unwrap();
             let mut reader = BufReader::new(&stream);

@@ -58,7 +58,7 @@ function waitforme(millisec) {
   return new Promise(resolve => { 
       setTimeout(() => { resolve('') }, millisec); 
   }) 
-} 
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   address = document.querySelector("#address");
@@ -69,6 +69,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#send").addEventListener("click", (e) => {
     e.preventDefault();
     send_command();
+  });
+
+  document.querySelector("#uploadScript").addEventListener("click", (e) => {
+    document.querySelector("#preview2").click();
   });
 
   document.querySelector("#preview2").addEventListener("change", (e) => {
