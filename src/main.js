@@ -80,4 +80,6 @@ window.addEventListener("DOMContentLoaded", () => {
     preview2(e);
   });
 
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
 });

@@ -5,7 +5,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "io-Interface",
+    "productName": "io-interface",
     "version": "1.0.0"
   },
   "tauri": {
