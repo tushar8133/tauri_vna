@@ -1,17 +1,31 @@
-const { invoke } = window.__TAURI__.tauri;
+const { invoke } = window.__TAURI__.core;
+const { Command } = window.__TAURI__.shell;
+
+// runAdb(["devices"]);
+// runAdb(["start-server"]);
+// runAdb(["kill-server"]);
+// runAdb(["logcat", "-d", "-t", "100"]);
+// runAdb(["tcpip", "5555"]);
+// runAdb(["connect", prompt("Enter host:port", "192.168.0.10:5555")]);
+// runAdb(["start-server"]);
+export async function runAdb(args) {
+  try {
+    const cmd = Command.sidecar("binaries/adb", args);
+    const result = await cmd.execute();
+    return `$ adb ${args.join(" ")}\n${result.stdout}${result.stderr}\n`;
+  } catch (err) {
+    return "ERR: " + err.message + "\n";
+  }
+}
+
 
 let greetInputEl;
 let greetMsgEl;
 
 async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
-}
-
-
-async function connectToMachine() {
-  // alert(234)
-  greetMsgEl.textContent = await invoke("vna_send", { address: "127.0.0.1:5001", command: "*IDN?" });
+  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+  const aaa = await runAdb(["start-server"]);
+  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value + aaa });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -21,11 +35,4 @@ window.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     greet();
   });
-
-  document.querySelector("#connect-to-machine").addEventListener("click", (e) => {
-    e.preventDefault();
-    connectToMachine();
-  });
-
-  
 });

@@ -1,15 +1,26 @@
 {
-  "name": "anopp-shockline",
+  "name": "iointerface",
   "private": true,
-  "version": "0.0.0",
+  "version": "3.1.0",
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "start": "tauri dev",
-    "justbuild": "tauri build",
-    "build:win": "tauri build -- --target x86_64-pc-windows-msvc"
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "bundle": "tauri bundle",
+    "app": "tauri build --bundles app",
+    "exe": "tauri build --bundles exe",
+    "nsis": "tauri build --bundles nsis",
+    "win": "tauri build -- --target x86_64-pc-windows-msvc",
+    "winarm": "tauri build -- --target aarch64-pc-windows-msvc",
+    "createicon": "tauri icon icon.png",
+    "machine": "nc -l -k 5001",
+    "clean": "node clean.mjs"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.8"
+    "@tauri-apps/cli": "^2"
+  },
+  "dependencies": {
+    "@tauri-apps/plugin-shell": "^2.3.0"
   }
 }
