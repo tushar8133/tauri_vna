@@ -25,7 +25,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 21px;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 1rem;
 }
 
 * {
