@@ -133,6 +133,30 @@ function waitforme(sec) {
   })
 }
 
+async function saveLog() {
+  try {
+    const path = await invoke('plugin:dialog|save', {
+      options: {
+        defaultPath: `log-${Date.now()}.txt`
+      }
+    });
+    const encoder = new TextEncoder();
+    await invoke('plugin:fs|write_text_file', encoder.encode(message.value), {
+      headers: {
+        path: encodeURIComponent(path instanceof URL ? path.toString() : path),
+        options: JSON.stringify({
+          baseDir: 7
+        })
+      }
+    });
+    logMessage(`Log saved at ${path}`);
+    logMessage("------------------------------------------------------------");
+  } catch (e) {
+    logMessage(`Failed to save log: ${e}`);
+    logMessage("------------------------------------------------------------");
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   address = document.querySelector("#address");
   port = document.querySelector("#port");
@@ -152,6 +176,11 @@ window.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     message.value = "";
     command.value = "";
+  });
+
+  document.querySelector("#save-log").addEventListener("click", (e) => {
+    e.preventDefault();
+    saveLog();
   });
 
   document.querySelector("#preview2").addEventListener("change", (e) => {

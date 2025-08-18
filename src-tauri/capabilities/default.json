@@ -10,6 +10,12 @@
     "opener:default",
     "shell:default",
     {
+      "identifier": "dialog:allow-save"
+    },
+    {
+      "identifier": "fs:allow-write-text-file"
+    },
+    {
       "identifier": "shell:allow-execute",
       "allow": [
         {
