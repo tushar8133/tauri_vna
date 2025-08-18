@@ -11,6 +11,11 @@ if [ -z "$NEW_VERSION" ]; then
   exit 1
 fi
 
+rm -f package-lock.json
+rm -rf node_modules
+rm -f src-tauri/Cargo.lock
+rm -rf src-tauri/target
+
 # Update Cargo.toml
 sed -i '' "s/^version = \"[0-9.]*\"/version = \"$NEW_VERSION\"/" src-tauri/Cargo.toml
 
