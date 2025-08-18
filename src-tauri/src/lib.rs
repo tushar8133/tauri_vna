@@ -35,7 +35,7 @@ fn connect_machine(remote: String, command: String) -> String {
             }
         },
         Err(e) => {
-            return "CONNECTION NOT FOUND".to_string();
+            return "Device not found".to_string();
         }
     }
     return "Terminated".to_string();
