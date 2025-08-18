@@ -345,3 +345,6 @@ In Rust, you can do the same with `app.shell().sidecar("adb").args(["logcat"]).s
 - Persist last device / IP and command history.
 - Add a background service to auto‑start ADB and watch for device add/remove (listen to `adb track-devices`).
 
+# Shockline
+https://www.anritsu.com/en-US/test-measurement/support/downloads/software/dwl18844
+
