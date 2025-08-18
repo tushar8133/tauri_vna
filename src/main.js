@@ -17,24 +17,3 @@ export async function runAdb(args) {
     return "ERR: " + err.message + "\n";
   }
 }
-
-
-let greetInputEl;
-let greetMsgEl;
-
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  const aaa = await runAdb(["start-server"]);
-  const bbb = await invoke("greet", { name: greetInputEl.value });
-  const ccc = await invoke("connect_machine", { remote: "127.0.0.1:5001", command: "mmmm?" });
-  greetMsgEl.textContent = aaa + bbb + ccc
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
-  });
-});
