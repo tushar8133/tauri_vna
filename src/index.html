@@ -13,18 +13,41 @@
 
   <h1>io-interface</h1>
 
-  <fieldset class="connection">
-    <legend>Connection</legend>
-    <input id="address" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1" />
-    <input id="port" placeholder="PORT" style="width: 70px;" value="5001" />
-    <input type="file" id="preview2" accept=".txt">
-    <button id="uploadScript">Upload Script</button>
-    <label><input type="checkbox" id="loop">Loop</label>
-  </fieldset>
+  <div class="lane1">
+
+    <fieldset class="connection">
+      <legend>Connection</legend>
+      <input id="address" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1" />
+      <input id="port" placeholder="PORT" style="width: 70px;" value="5001" />
+    </fieldset>
+
+    <fieldset class="connection">
+      <legend>Script</legend>
+      <input type="file" id="preview2" accept=".txt">
+      <button id="uploadScript">Upload Script</button>
+      <label><input type="checkbox" id="loop">Loop</label>
+    </fieldset>
+
+    <fieldset class="connection">
+      <legend>Log</legend>
+      <button id="clear-log">Clear</button>
+      <button id="save-log">Save</button>
+    </fieldset>
+  </div>
 
   <fieldset class="command">
     <legend>Command</legend>
-    <input id="command" placeholder="Enter Command" value="*IDN?" />
+    <input id="command" list="command-list" placeholder="Enter Command" value="*IDN?" />
+    <datalist id="command-list">
+      <option value="*IDN?"></option>
+      <option value="*RST"></option>
+      <option value="adb devices"></option>
+      <option value="adb start-server"></option>
+      <option value="adb kill-server"></option>
+      <option value="adb logcat -d -t 100"></option>
+      <option value="adb tcpip 5555"></option>
+      <option value="adb connect 192.168.0.10:5555"></option>
+    </datalist>
     <button id="send">Send</button>
   </fieldset>
 
