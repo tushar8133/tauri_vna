@@ -5,7 +5,10 @@ export async function runAdb(args) {
   try {
     const cmd = Command.sidecar("binaries/adb", args);
     const result = await cmd.execute();
-    return `${result.stdout}${result.stderr}`;
+    let output = "";
+    if (result.stdout) output += result.stdout;
+    if (result.stderr) output += `\nERR: ${result.stderr}`;
+    return String(output).trim();
   } catch (err) {
     return "ERROR: " + err.message;
   }
@@ -18,7 +21,8 @@ let message;
 let filedata = [];
 
 function logMessage(x) {
-  message.value += "\n" + x;
+  message.value = String(message.value).trim();
+  message.value += "\n" + String(x).trim();
   // message.scrollTop = message.scrollHeight;
   smoothScrollToBottom(message);
 }
@@ -33,18 +37,18 @@ function smoothScrollToBottom(element) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
     element.scrollTop = start + (end - start) * progress;
-
     if (progress < 1) {
       window.requestAnimationFrame(animateScroll);
     }
   }
-
   window.requestAnimationFrame(animateScroll);
 };
 
 async function send_command() {
-  if (new RegExp("^ *adb +", "i").test(command.value)) {
-    const result = await runAdb(["start-server"]);
+  const cmdText = String(command.value);
+  const regex = new RegExp("^adb (.+)", "i");
+  if (regex.test(cmdText)) {
+    const result = await runAdb([regex.exec(cmdText)[1]]);
     logMessage(`${"$ "}${command.value}\n${result}`);
   } else {
     const fullAddress = address.value + ":" + port.value;
