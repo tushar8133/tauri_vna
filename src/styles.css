@@ -70,9 +70,11 @@ input, textarea, button {
   height: 100%;
 } */
 
-textarea {
+textarea#message {
   min-height: 20vh;
   max-height: 100%;
+  color: #ffffff85;
+  font-size: 0.8rem;
 }
 
 a.highlight {
@@ -145,3 +147,4 @@ fieldset {
     margin-left: auto;
   }
 }
+
