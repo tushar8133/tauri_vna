@@ -102,10 +102,6 @@ a.highlight {
   text-decoration: none;
 }
 
-a.highlight:hover {
-  color: #24c8db;
-}
-
 input,
 textarea,
 button {
@@ -121,7 +117,7 @@ footer {
   justify-content: space-between;
   color: gray;
   padding: 0 0px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   & a {
     text-decoration: none;
     color: gray;
