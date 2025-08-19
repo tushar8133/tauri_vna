@@ -15,7 +15,7 @@
     "winarm": "tauri build -- --target aarch64-pc-windows-msvc",
     "createicon": "tauri icon icon.png",
     "machine": "nc -l -k 5001",
-    "reinstall": "node clean.mjs && npm i && npm run build"
+    "rebuild": "node clean.mjs && npm i && npm run build"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2"
