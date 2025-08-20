@@ -4,6 +4,7 @@
   "version": "4.0.0",
   "identifier": "com.anritsu.iointerface",
   "build": {
+    "beforeBuildCommand": "node bundle.mjs",
     "frontendDist": "../src"
   },
   "app": {
@@ -24,6 +25,9 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "externalBin": [
+      "binaries/adb"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -31,8 +35,8 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "externalBin": [
-      "binaries/adb"          
-    ]
+    "resources": {
+      "resources/*": "./" 
+    }
   }
 }

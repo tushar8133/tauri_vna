@@ -9,13 +9,15 @@
     "build": "tauri build",
     "bundle": "tauri bundle",
     "app": "tauri build --bundles app",
-    "exe": "tauri build --bundles exe",
+    "msi": "tauri build --bundles msi",
     "nsis": "tauri build --bundles nsis",
     "win": "tauri build -- --target x86_64-pc-windows-msvc",
     "winarm": "tauri build -- --target aarch64-pc-windows-msvc",
     "createicon": "tauri icon icon.png",
     "machine": "nc -l -k 5001",
-    "rebuild": "node clean.mjs && npm i && npm run build"
+    "clean": "node clean.mjs",
+    "buildall": "npm i && npm run build",
+    "reinstall": "npm run clean && npm run buildall"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.4.0"
