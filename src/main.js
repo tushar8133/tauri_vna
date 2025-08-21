@@ -166,6 +166,7 @@ window.addEventListener("DOMContentLoaded", () => {
   port = document.querySelector("#port");
   command = document.querySelector("#command");
   message = document.querySelector("#message");
+  message.disabled = true;
 
   document.querySelector("#send").addEventListener("click", (e) => {
     e.preventDefault();

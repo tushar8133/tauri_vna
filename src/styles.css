@@ -72,9 +72,6 @@ h1, h6 {
 
 .app-name {
   margin-top: 2rem;
-  color: #545454;
-  text-shadow: #000000 -2px 2px 0;
-  /* text-shadow: 2px 2px 0 #000, -2px -2px 0 #000; */
 }
 
 input, textarea {
@@ -166,3 +163,8 @@ fieldset {
   }
 }
 
+.engraved {
+  /* text-shadow: #000000 -2px 2px 0; */
+  color: #545454;
+  text-shadow: 2px 2px 0 #000, -2px -2px 0 #2f2f2f;
+}
