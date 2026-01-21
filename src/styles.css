@@ -89,7 +89,7 @@ input, textarea, button {
 } */
 
 textarea#message {
-  min-height: 20vh;
+  min-height: 10vh;
   max-height: 100%;
   color: #ffffff85;
   font-size: 0.8rem;
