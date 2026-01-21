@@ -193,6 +193,53 @@ window.addEventListener("DOMContentLoaded", () => {
     preview2(e);
   });
 
+  async function preview3(data) {
+    filedata = data.split("\r\n");
+    // document.querySelector("#preview2").value = null;
+    let noblanks = filedata.filter((line) => !(/^\s*$/.test(line)));
+    do {
+      await sendList(noblanks);
+      logMessage("\n============================================================\n");
+    } while (loop.checked)
+    preventGestures(false);
+  }
+
+  async function loadScriptButtons() {
+    try {
+      const files = await invoke('list_iointerface_txt_files');
+      const container = document.querySelector('.utilities-container > div');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!files || files.length === 0) {
+        document.querySelector('.utilities-container').style.display = 'none';
+        return;
+      }
+      document.querySelector('.utilities-container').style.display = 'block';
+      files.forEach((name) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = name.replace(/\.txt$/, '');
+        // btn.textContent = name;
+        btn.addEventListener('click', async () => {
+          try {
+            const content = await invoke('read_iointerface_txt_file', { name });
+            command.value = String(content);
+            preview3(String(content));
+          } catch (e) {
+            console.error('Failed to read script', e);
+            command.value = name;
+          }
+        });
+        container.appendChild(btn);
+      });
+    } catch (e) {
+      console.error('Failed to load script buttons', e);
+    }
+  }
+
+  // populate script buttons on startup
+  loadScriptButtons();
+
   document.addEventListener('contextmenu', event => event.preventDefault());
 
   command.addEventListener("keypress", (event) => {

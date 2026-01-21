@@ -5,6 +5,9 @@ use std::io::{BufRead, BufReader, Write};
 use std::time::Duration;
 use std::net::SocketAddr;
 use regex::Regex;
+use std::env;
+use std::path::PathBuf;
+use std::fs;
 
 #[tauri::command]
 fn connect_machine(remote: String, command: String) -> String {
@@ -41,6 +44,36 @@ fn connect_machine(remote: String, command: String) -> String {
     return "Terminated".to_string();
 }
 
+#[tauri::command]
+fn list_iointerface_txt_files() -> Vec<String> {
+    let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
+    let mut dir = PathBuf::from(home);
+    dir.push("iointerface");
+
+    let mut files: Vec<String> = Vec::new();
+
+    if !dir.exists() {
+        return files;
+    }
+
+    if let Ok(entries) = fs::read_dir(dir) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_file() {
+                if let Some(ext) = path.extension() {
+                    if ext == "txt" {
+                        if let Some(name) = path.file_name().and_then(|s| s.to_str()) {
+                            files.push(name.to_string());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    files
+}
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -54,7 +87,24 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .invoke_handler(tauri::generate_handler![greet, connect_machine])
+        .invoke_handler(tauri::generate_handler![greet, connect_machine, list_iointerface_txt_files, read_iointerface_txt_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn read_iointerface_txt_file(name: String) -> String {
+    let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
+    let mut path = PathBuf::from(home);
+    path.push("iointerface");
+    path.push(name);
+
+    if !path.exists() {
+        return format!("ERROR: file not found: {}", path.to_string_lossy());
+    }
+
+    match fs::read_to_string(&path) {
+        Ok(contents) => contents,
+        Err(e) => format!("ERROR: failed to read file: {}", e),
+    }
 }

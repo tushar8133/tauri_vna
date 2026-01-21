@@ -168,3 +168,12 @@ fieldset {
   color: #545454;
   text-shadow: 1.5px 1.5px 0 #000, -1.5px -1.5px 0 #2f2f2f;
 }
+
+.utilities-container {
+  flex-direction: column;
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
