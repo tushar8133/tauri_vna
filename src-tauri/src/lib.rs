@@ -48,6 +48,7 @@ fn connect_machine(remote: String, command: String) -> String {
 fn list_iointerface_txt_files() -> Vec<String> {
     let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
     let mut dir = PathBuf::from(home);
+    dir.push("Desktop");
     dir.push("iointerface");
 
     let mut files: Vec<String> = Vec::new();
@@ -96,6 +97,7 @@ pub fn run() {
 fn read_iointerface_txt_file(name: String) -> String {
     let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
     let mut path = PathBuf::from(home);
+    path.push("Desktop");
     path.push("iointerface");
     path.push(name);
 
