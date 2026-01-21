@@ -25,6 +25,7 @@ sed -i '' "s/\"version\": \"[0-9.]*\"/\"version\": \"$NEW_VERSION\"/" src-tauri/
 # Update package.json
 sed -i '' "s/\"version\": \"[0-9.]*\"/\"version\": \"$NEW_VERSION\"/" package.json
 
-sed -i '' "s/<div>Version [0-9.]*<\/div>/<div>Version $NEW_VERSION<\/div>/" src/index.html
+# Update index.html
+sed -i '' "s/<span>Version [0-9.]*<\/span>/<span>Version $NEW_VERSION<\/span>/" src/index.html
 
 echo "Version updated to $NEW_VERSION in all files."
