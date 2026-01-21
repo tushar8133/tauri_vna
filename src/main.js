@@ -197,6 +197,7 @@ window.addEventListener("DOMContentLoaded", () => {
     filedata = data.split("\r\n");
     // document.querySelector("#preview2").value = null;
     let noblanks = filedata.filter((line) => !(/^\s*$/.test(line)));
+    preventGestures(true);
     do {
       await sendList(noblanks);
       logMessage("\n============================================================\n");
