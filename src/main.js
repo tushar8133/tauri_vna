@@ -52,16 +52,16 @@ async function send_command() {
     logMessage(`${"$ "}${command.value}\n${result}`);
   } else {
     const fullAddress = address.value + ":" + port.value;
-    const result = await invoke("connect_machine", { remote: fullAddress, command: command.value });
+    let result = await invoke("connect_machine", { remote: fullAddress, command: command.value });
     if (result.startsWith("__BINARY__")) {
       // result = atob(result.replace("__BINARY__", ""));
-      const b64 = result.replace("__BINARY__", "");
+      result = result.replace("__BINARY__", "");
       const dialog = document.querySelector("dialog");
       const imgEl = dialog.querySelector("dialog img");
-      imgEl.src = `data:image/png;base64,${b64}`;
+      imgEl.src = `data:image/png;base64,${result}`;
       dialog.showModal();
-      logMessage(`${fullAddress} ${"SNAP"}\n${"VNA Screen Captured"}`);
-      return;
+      command.value = "VNA Capture";
+      result = "Image received";
     }
 
     logMessage(`${fullAddress} ${command.value}\n${result}`);
@@ -202,6 +202,13 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#preview2").addEventListener("change", (e) => {
     e.preventDefault();
     preview2(e);
+  });
+  
+  document.querySelector("#capture-vna").addEventListener("click", (e) => {
+    e.preventDefault();
+    command.value = "HCOPy:PRINt:TYPe BITM; :DISP:COL:NORM:TRAC2:DATA 0, 150, 0; BMPC; OBMP";
+    send_command();
+    command.value = "";
   });
   
   document.querySelector("dialog div").addEventListener("click", (e) => {
