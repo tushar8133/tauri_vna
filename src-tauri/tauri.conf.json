@@ -11,9 +11,9 @@
     "windows": [
       {
         "title": "iointerface",
-        "width": 800,
+        "width": 810,
         "height": 700,
-        "minWidth": 800,
+        "minWidth": 810,
         "minHeight": 700,
         "theme": "Dark"
       }
