@@ -158,7 +158,8 @@ fieldset {
 
 .lane1 {
   display: flex;
-  & fieldset:nth-child(3) {
+  gap: 10px;
+  & fieldset:nth-child(2) {
     margin-left: auto;
   }
 }
@@ -177,5 +178,35 @@ fieldset {
     gap: 10px;
     max-height: 120px;
     overflow-y: auto;
+  }
+}
+
+dialog {
+  img {
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    line-height: 0;
+    color: maroon;
+    user-select: none;
+    &:hover {
+      color: red;
+    }
   }
 }

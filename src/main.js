@@ -53,6 +53,17 @@ async function send_command() {
   } else {
     const fullAddress = address.value + ":" + port.value;
     const result = await invoke("connect_machine", { remote: fullAddress, command: command.value });
+    if (result.startsWith("__BINARY__")) {
+      // result = atob(result.replace("__BINARY__", ""));
+      const b64 = result.replace("__BINARY__", "");
+      const dialog = document.querySelector("dialog");
+      const imgEl = dialog.querySelector("dialog img");
+      imgEl.src = `data:image/png;base64,${b64}`;
+      dialog.showModal();
+      logMessage(`${fullAddress} ${"SNAP"}\n${"VNA Screen Captured"}`);
+      return;
+    }
+
     logMessage(`${fullAddress} ${command.value}\n${result}`);
   }
   logMessage("------------------------------------------------------------");
@@ -191,6 +202,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#preview2").addEventListener("change", (e) => {
     e.preventDefault();
     preview2(e);
+  });
+  
+  document.querySelector("dialog div").addEventListener("click", (e) => {
+    e.target.closest("dialog").close();
   });
 
   async function preview3(data) {

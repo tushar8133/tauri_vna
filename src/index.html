@@ -12,6 +12,10 @@
 
 <body spellcheck="false">
 
+  <dialog>
+    <img src="#">
+    <div>&times;</div>
+  </dialog>
   <h1 class="app-name engraved">io-interface</h1>
 
   <div class="lane1">
@@ -29,12 +33,17 @@
       <input id="address" list="address-list" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1" />
       <input id="port" list="port-list" placeholder="PORT" style="width: 70px;" value="5001" />
     </fieldset>
-
+    
     <fieldset class="connection">
       <legend>Script</legend>
       <input type="file" id="preview2" accept=".txt">
       <button id="uploadScript">Upload Script</button>
       <label><input type="checkbox" id="loop">Loop</label>
+    </fieldset>
+    
+    <fieldset class="connection">
+      <legend>Cap VNA</legend>
+      <button id="capture-vna">Capture</button>
     </fieldset>
 
     <fieldset class="connection">
@@ -43,7 +52,12 @@
       <button id="save-log">Save</button>
     </fieldset>
   </div>
-
+  
+  <fieldset class="utilities-container">
+      <legend>Utilities</legend>
+      <div></div>
+  </fieldset>
+  
   <fieldset class="command">
     <legend>Command</legend>
     <input id="command" list="command-list" placeholder="Enter Command" value="*IDN?" />
@@ -60,10 +74,6 @@
     <button id="send">Send</button>
   </fieldset>
   
-  <fieldset class="utilities-container">
-      <legend>Utilities</legend>
-      <div></div>
-  </fieldset>
 
   <fieldset class="console">
     <legend>Console</legend>

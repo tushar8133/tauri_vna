@@ -1,16 +1,16 @@
 #![allow(unused)]
-use std::net::TcpStream;
 use std::str::{from_utf8, FromStr};
-use std::io::{BufRead, BufReader, Write};
+use std::net::{TcpStream, SocketAddr};
+use std::io::{BufRead, BufReader, Read, Write};
 use std::time::Duration;
-use std::net::SocketAddr;
 use regex::Regex;
 use std::env;
 use std::path::PathBuf;
 use std::fs;
+use base64::{engine::general_purpose, Engine as _};
 
 #[tauri::command]
-fn connect_machine(remote: String, command: String) -> String {
+fn connect_machine1(remote: String, command: String) -> String {
     let remote: SocketAddr = remote.parse().unwrap();
     let msg = format!("{}{}", &command, "\n");
     let wait = if msg.contains("?") { 3.0 } else { 0.1 };
@@ -42,6 +42,81 @@ fn connect_machine(remote: String, command: String) -> String {
         }
     }
     return "Terminated".to_string();
+}
+
+#[tauri::command]
+fn connect_machine(remote: String, command: String) -> String {
+    let remote: SocketAddr = match remote.parse() {
+        Ok(r) => r,
+        Err(_) => return "Invalid address".to_string(),
+    };
+
+    let msg = format!("{}\r\n", command);
+    let wait = if msg.contains("?") { 3.0 } else { 0.1 };
+
+    match TcpStream::connect_timeout(&remote, Duration::from_secs(5)) {
+        Ok(mut stream) => {
+            stream
+                .set_read_timeout(Some(Duration::from_secs_f32(wait)))
+                .unwrap();
+
+            if stream.write_all(msg.as_bytes()).is_err() {
+                return "Write failed".to_string();
+            }
+
+            // Read first byte to detect protocol
+            let mut first = [0u8; 1];
+            if stream.read_exact(&mut first).is_err() {
+                return "No response".to_string();
+            }
+
+            // ===============================
+            // SCPI DEFINITE LENGTH BINARY
+            // ===============================
+            if first[0] == b'#' {
+                // Read digit count
+                let mut digit = [0u8; 1];
+                stream.read_exact(&mut digit).unwrap();
+                let digits = (digit[0] - b'0') as usize;
+
+                // Read length field
+                let mut len_buf = vec![0u8; digits];
+                stream.read_exact(&mut len_buf).unwrap();
+
+                let len_str = String::from_utf8(len_buf).unwrap();
+                let payload_len: usize = len_str.parse().unwrap();
+
+                // Read EXACT payload
+                let mut payload = vec![0u8; payload_len];
+                stream.read_exact(&mut payload).unwrap();
+
+                // Return Base64 (binary safe for Tauri)
+                let encoded = general_purpose::STANDARD.encode(payload);
+                return format!("__BINARY__{}", encoded);
+            }
+
+            // ===============================
+            // ASCII / RAW FALLBACK
+            // ===============================
+            let mut buffer = vec![0u8; 8192];
+            let mut data = vec![first[0]];
+
+            if let Ok(n) = stream.read(&mut buffer) {
+                data.extend_from_slice(&buffer[..n]);
+            }
+
+            // Try UTF-8
+            if let Ok(text) = std::str::from_utf8(&data) {
+                return text.trim().to_string();
+            }
+
+            // Otherwise raw binary
+            let encoded = general_purpose::STANDARD.encode(&data);
+            format!("__BINARY__{}", encoded)
+        }
+
+        Err(_) => "Device not found".to_string(),
+    }
 }
 
 #[tauri::command]
