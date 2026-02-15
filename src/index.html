@@ -18,8 +18,16 @@
 
     <fieldset class="connection">
       <legend>Connection</legend>
-      <input id="address" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1" />
-      <input id="port" placeholder="PORT" style="width: 70px;" value="5001" />
+      <datalist id="address-list">
+        <option value="127.0.0.1"></option>
+        <option value="192.168.1.1"></option>
+      </datalist>
+      <datalist id="port-list">
+        <option value="5001"></option>
+        <option value="9001"></option>
+      </datalist>
+      <input id="address" list="address-list" placeholder="IP ADDRESS" style="width: 150px;" value="127.0.0.1" />
+      <input id="port" list="port-list" placeholder="PORT" style="width: 70px;" value="5001" />
     </fieldset>
 
     <fieldset class="connection">

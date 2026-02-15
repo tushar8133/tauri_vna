@@ -77,7 +77,7 @@ function preview2(e) {
   reader.onload = async function (evt) {
     preventGestures(true);
     let data = evt.target.result;
-    filedata = data.split("\r\n");
+    filedata = data.split(/\r?\n/);
     document.querySelector("#preview2").value = null;
     let noblanks = filedata.filter((line) => !(/^\s*$/.test(line)));
     do {
@@ -194,7 +194,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   async function preview3(data) {
-    filedata = data.split("\r\n");
+    filedata = data.split(/\r?\n/);
     // document.querySelector("#preview2").value = null;
     let noblanks = filedata.filter((line) => !(/^\s*$/.test(line)));
     preventGestures(true);
