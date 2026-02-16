@@ -348,3 +348,7 @@ In Rust, you can do the same with `app.shell().sidecar("adb").args(["logcat"]).s
 # Shockline
 MS46122B - https://www.anritsu.com/en-US/test-measurement/support/downloads/software/dwl18844
 
+# TCP using Terminal
+- `nc 192.168.1.5 5001` macos, present by default.
+- `ncat 192.168.1.5 5001` for windows, download [ncat portable](https://nmap.org/dist/ncat-portable-5.59BETA1.zip) and paste in system32 folder.
+
