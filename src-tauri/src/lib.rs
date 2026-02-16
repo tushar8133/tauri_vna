@@ -121,26 +121,26 @@ fn connect_machine(remote: String, command: String) -> String {
 
 #[tauri::command]
 fn list_iointerface_txt_files() -> Vec<String> {
-    let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
-    let mut dir = PathBuf::from(home);
-    dir.push("Desktop");
-    dir.push("iointerface");
+    let mut files = Vec::new();
 
-    let mut files: Vec<String> = Vec::new();
+    let mut dir = match dirs::desktop_dir() {
+        Some(path) => path,
+        None => return files,
+    };
+
+    dir.push("iointerface");
 
     if !dir.exists() {
         return files;
     }
 
-    if let Ok(entries) = fs::read_dir(dir) {
+    if let Ok(entries) = std::fs::read_dir(dir) {
         for entry in entries.flatten() {
             let path = entry.path();
             if path.is_file() {
-                if let Some(ext) = path.extension() {
-                    if ext == "txt" {
-                        if let Some(name) = path.file_name().and_then(|s| s.to_str()) {
-                            files.push(name.to_string());
-                        }
+                if path.extension().and_then(|e| e.to_str()) == Some("txt") {
+                    if let Some(name) = path.file_name().and_then(|s| s.to_str()) {
+                        files.push(name.to_string());
                     }
                 }
             }
@@ -170,17 +170,29 @@ pub fn run() {
 
 #[tauri::command]
 fn read_iointerface_txt_file(name: String) -> String {
-    let home = env::var("USERPROFILE").or_else(|_| env::var("HOME")).unwrap_or_else(|_| String::from("."));
-    let mut path = PathBuf::from(home);
-    path.push("Desktop");
-    path.push("iointerface");
-    path.push(name);
+    let mut base_path = match dirs::desktop_dir() {
+        Some(path) => path,
+        None => return "ERROR: Could not determine Desktop directory".into(),
+    };
 
-    if !path.exists() {
-        return format!("ERROR: file not found: {}", path.to_string_lossy());
+    base_path.push("iointerface");
+
+    // Create a binding so it doesn't get dropped
+    let name_path = PathBuf::from(&name);
+
+    let file_name = match name_path.file_name() {
+        Some(f) => f,
+        None => return "ERROR: Invalid file name".into(),
+    };
+
+    let mut full_path = base_path;
+    full_path.push(file_name);
+
+    if !full_path.exists() {
+        return format!("ERROR: file not found: {}", full_path.to_string_lossy());
     }
 
-    match fs::read_to_string(&path) {
+    match std::fs::read_to_string(&full_path) {
         Ok(contents) => contents,
         Err(e) => format!("ERROR: failed to read file: {}", e),
     }
