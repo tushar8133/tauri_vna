@@ -212,7 +212,21 @@ window.addEventListener("DOMContentLoaded", () => {
     command.value = "";
   });
   
-  document.querySelector("dialog div").addEventListener("click", (e) => {
+  document.querySelector("#btn-download")?.addEventListener("click", (e) => {
+    const imgEl = e.target.closest("dialog").querySelector("img");
+    const src = imgEl.src;
+    const link = document.createElement("a");
+    link.href = src;
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hour = String(now.getHours()).padStart(2, '0');
+    const minute = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timestamp = `${year}-${month}-${day}_${hour}${minute}${seconds}`;
+    link.download = `vna-capture-${timestamp}.png`;
+    link.click();
     e.target.closest("dialog").close();
   });
 
