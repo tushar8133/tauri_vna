@@ -65,9 +65,10 @@ async function send_command() {
     }
 
     logMessage(`${fullAddress} ${command.value}\n${result}`);
+    command.value = "";
   }
   logMessage("------------------------------------------------------------");
-
+  
 }
 
 function preventGestures(val) {
@@ -206,7 +207,7 @@ window.addEventListener("DOMContentLoaded", () => {
   
   document.querySelector("#capture-vna").addEventListener("click", (e) => {
     e.preventDefault();
-    command.value = "HCOPy:PRINt:TYPe BITM; :DISP:COL:NORM:TRAC2:DATA 0, 150, 0; BMPC; OBMP";
+    command.value = ":DISP:COL:NORM:TRAC2:DATA 0, 150, 0; HCOPy:PRINt:TYPe BITM; RTL; BMPC; OBMP; RTL; ?";
     send_command();
     command.value = "";
   });

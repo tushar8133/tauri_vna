@@ -45,14 +45,15 @@ fn connect_machine1(remote: String, command: String) -> String {
 }
 
 #[tauri::command]
-fn connect_machine(remote: String, command: String) -> String {
-    let remote: SocketAddr = match remote.parse() {
-        Ok(r) => r,
-        Err(_) => return "Invalid address".to_string(),
-    };
+async fn connect_machine(remote: String, command: String) -> String {
+    tokio::task::spawn_blocking(move || {
+        let remote: SocketAddr = match remote.parse() {
+            Ok(r) => r,
+            Err(_) => return "Invalid address".to_string(),
+        };
 
-    let msg = format!("{}\r\n", command);
-    let wait = if msg.contains("?") { 3.0 } else { 0.1 };
+        let msg = format!("{}{}", command, "\r\n");
+        let wait = if msg.contains("?") { 3.0 } else { 0.1 };
 
     match TcpStream::connect_timeout(&remote, Duration::from_secs(5)) {
         Ok(mut stream) => {
@@ -117,6 +118,9 @@ fn connect_machine(remote: String, command: String) -> String {
 
         Err(_) => "Device not found".to_string(),
     }
+    })
+    .await
+    .unwrap_or_else(|_| "Thread error".to_string())
 }
 
 #[tauri::command]
