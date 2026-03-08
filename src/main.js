@@ -56,6 +56,7 @@ async function send_command() {
     if (result.startsWith("__BINARY__")) {
       // result = atob(result.replace("__BINARY__", ""));
       result = result.replace("__BINARY__", "");
+      result = await addTimestampToImage(result);
       const dialog = document.querySelector("dialog");
       const imgEl = dialog.querySelector("dialog img");
       imgEl.src = `data:image/png;base64,${result}`;
@@ -71,6 +72,58 @@ async function send_command() {
   
 }
 
+
+async function addTimestampToImage(base64) {
+  return new Promise((resolve) => {
+
+    const img = new Image();
+    img.src = "data:image/jpeg;base64," + base64;
+
+    img.onload = function () {
+
+      const margin = 40;
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = img.width;
+      canvas.height = img.height + margin;
+
+      // Background (image area + margin)
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw original image
+      ctx.drawImage(img, 0, 0);
+
+      // Text styling
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#666";
+      ctx.textBaseline = "middle";
+
+      const y = img.height + margin / 2;
+      const padding = 12;
+
+      // Left text
+      ctx.textAlign = "left";
+      ctx.fillText("IO-Interface", padding, y);
+
+      // Center text
+      ctx.textAlign = "center";
+      ctx.fillText("Anritsu", canvas.width / 2, y);
+
+      // Right text (timestamp)
+      ctx.textAlign = "right";
+      ctx.fillText(new Date(), canvas.width - padding, y);
+
+      // Export as JPEG base64 (text becomes pixels)
+      const newBase64 = canvas.toDataURL("image/jpeg", 0.95).split(",")[1];
+
+      resolve(newBase64);
+    };
+
+  });
+}
 function preventGestures(val) {
   [
     document.querySelectorAll('input'),
